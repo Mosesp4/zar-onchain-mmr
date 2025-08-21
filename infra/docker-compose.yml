@@ -1,0 +1,11 @@
+services:
+  sim:
+    build: ..
+    working_dir: /app/sim
+    command: python backtest.py --days 60
+  mm:
+    image: node:20
+    working_dir: /work
+    volumes:
+      - ../code/mm:/work
+    command: sh -lc "npm i && npm run build && node dist/rangeManager.js"
