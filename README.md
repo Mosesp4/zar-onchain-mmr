@@ -1,44 +1,42 @@
 # ZAR Onchain Market Making — Research & Prototype
 
-This repo supports my LAVA task #2 response. It contains:
-- **Methodology** for ZAR↔USD market design without subsidizing imbalanced flows.
-- **LVR & Fees Simulator** (`code/sim`) to estimate LP PnL = fees − LVR − gas − hedging.
-- **Strategy Scaffolding** (`code/mm`) for a concentrated-liquidity market maker with:
-  - range management,
-  - oracle-bounded pricing,
-  - inventory caps + hedging stubs,
-  - optional dynamic fee policy (if protocol supports hooks).
+This repository supports my **Lava VC Task #2** response, researching a **ZAR ↔ USD AMM** with a focus on:
 
-> ⚠️ This is research scaffolding for discussion only. Do **not** use in production.
+- Liquidity Value Risk (LVR)  
+- Avoiding imbalanced trade flow subsidies  
+- Addressing a **high yield-bearing, reserve-backed ZAR stablecoin** in South Africa’s high-interest-rate economy (8–10%)  
 
-## Quickstart
+It contains:
 
-### 1) Python simulator
+- **Methodology** for ZAR ↔ USD market design, minimizing subsidies via dynamic fees.  
+- **LVR & Fees Simulator** (`code/sim`) to estimate LP PnL = fees − LVR − opportunity costs.  
+- **Planned Strategy Scaffolding** (`code/mm`, `code/solidity`) for a concentrated-liquidity market maker with range management, oracle-bounded pricing, inventory caps, hedging stubs, and optional dynamic fee hooks (to be implemented).  
+
+⚠️ **This is research scaffolding for discussion only. Do not use in production.**
+
+---
+
+## 🚀 Quickstart
+
+### 1) Python Simulator
+Run data fetching and AMM simulations:
+
 ```bash
 cd code/sim
-python3 -m venv .venv && source .venv/bin/activate  # Windows: .venv\Scripts\activate
+python -m venv .venv && .venv\Scripts\activate  # Linux/Mac: source .venv/bin/activate
 pip install -r requirements.txt
-python backtest.py --days 120 --base-fee-bps 8 --k-oracle-step 1.5
+
+# Fetch USDC/ZAR data and generate profiling report
+python run_pipeline.py  
+
+# Run simulations: LVR, impermanent loss, fees, opportunity costs
+python amm_simulations.py  
+
 ```
 
-### 2) TypeScript strategy scaffold
-```bash
-cd code/mm
-npm i
-cp src/config.example.json src/config.json  # Windows PowerShell: copy src\config.example.json src\config.json
-npm run build
-npm start  # dry-run: logs range updates + hypothetical hedges
-```
+### 2) Structure
 
-### 3) Docker (optional, one command to run sim)
-```bash
-cd infra
-docker compose up --build
-```
-
-## Structure
-```
-zar-onchain-mm/
+zar-onchain-mm-research/
 ├─ README.md
 ├─ docs/
 │  ├─ approach.md
@@ -46,34 +44,52 @@ zar-onchain-mm/
 │  └─ open-problems.md
 ├─ code/
 │  ├─ sim/
-│  │  ├─ backtest.py
+│  │  ├─ run_pipeline.py
+│  │  ├─ amm_simulations.py
+      ├─ backtest.py
+      ├─ calculate_lvr.py
+      ├─ fetch_usdc_zar.py
+      ├─ profile_report.py
+      ├─ amms.py
 │  │  └─ requirements.txt
-│  ├─ mm/
-│  │  ├─ package.json
-│  │  ├─ tsconfig.json
-│  │  └─ src/
-│  │     ├─ config.example.json
-│  │     ├─ rangeManager.ts
-│  │     ├─ feePolicy.ts
-│  │     ├─ oracle.ts
-│  │     ├─ hedgeBot.ts
-│  │     └─ utils.ts
-│  └─ solidity/
-│     └─ LvrAwareFeeHook.sol
-├─ infra/
-│  ├─ Dockerfile
-│  └─ docker-compose.yml
-├─ .env.example
+│  ├─ data/
+│  │  ├─ usdc_zar.csv
+│  │  ├─ usdc_zar_profile.html
+│  │  ├─ usdc_zar_simulations.csv
 ├─ .gitignore
 └─ .github/
    └─ workflows/
       └─ ci.yml
-```
 
-## Safety & secrets
-- Never commit real API keys. Use `.env` (example provided).
-- RPC endpoints in `config.json` should be non-sensitive or test RPCs.
+
+### 3) Current Functionality
+
+``` code/sim/run_pipeline.py ```
+
+- Fetches 90 days of USDC/ZAR data (2160 hourly candles, May 24, 2025 → August 22, 2025) from CryptoCompare.
+
+- Saves to data/usdc_zar.csv with columns: timestamp, open, high, low, close, volume, volume_zar.
+
+- Generates profiling report (data/usdc_zar_profile.html).
+
+``` code/sim/amm_simulations.py ```
+**Simulates:**
+
+- LVR: 13,193.92 ZAR (low due to USDC stability).
+
+- Impermanent Loss: Mean -0.003% (negligible).
+
+- Fees: 9,308,905.91 ZAR (dynamic 0.3–0.5%, needs volume validation).
+
+- Opportunity Cost: 28,333.15 ZAR (8% interest rate).
+
+Results saved to data/usdc_zar_simulations.csv.
+
+### 4) Safety & Secrets
+
+- Never commit real API keys. Use .env (example provided).
+
 - This repository is for demonstration only.
 
-## License
-MIT
+### 5) License
+**MIT**
