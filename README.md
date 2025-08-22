@@ -112,4 +112,4 @@ Results saved to data/usdc_zar_simulations.csv.
 - This repository is for demonstration only.
 
 ### 5) License
-**MIT**
+MIT License
