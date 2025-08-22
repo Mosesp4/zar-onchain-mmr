@@ -66,30 +66,25 @@ zar-onchain-mm-research/
 ``` code/sim/run_pipeline.py ```
 
 - Fetches 90 days of USDC/ZAR data (2160 hourly candles, May 24, 2025 → August 22, 2025) from CryptoCompare.
-
 - Saves to data/usdc_zar.csv with columns: timestamp, open, high, low, close, volume, volume_zar.
-
 - Generates profiling report (data/usdc_zar_profile.html).
-
+  
 ``` code/sim/amm_simulations.py ```<br />
  **Simulates:**
 
 - LVR: 13,193.92 ZAR (low due to USDC stability).
-
 - Impermanent Loss: Mean -0.003% (negligible).
-
 - Fees: 9,308,905.91 ZAR (dynamic 0.3–0.5%, needs volume validation).
-
 - Opportunity Cost: 28,333.15 ZAR (8% interest rate).
-
+  
 Results saved to data/usdc_zar_simulations.csv.
 
-``` fetch_usdc_zar.py ```
+``` code/sim/fetch_usdc_zar.py ```
   - Fetches ZAR/USD and USDC/ZAR market data from APIs (e.g., Binance, FX providers).  
   - Normalizes the data into a structured format (CSV/Parquet).  
   - Can be scheduled to run periodically for live updates.
 
-``` profile_report.py ``` 
+``` code/sim/profile_report.py ``` 
   - Generates automated exploratory data profiling reports using `ydata-profiling`.  
   - Provides statistics, distributions, correlations, and anomaly checks on fetched datasets.  
   - Useful for quickly understanding market data quality and potential biases.  
@@ -100,8 +95,8 @@ Results saved to data/usdc_zar_simulations.csv.
 - Helps simulate how different AMM pricing models would perform historically.  
 - Outputs performance metrics such as PnL, slippage, and arbitrage opportunities.  
 
-  ``` calculate_lvr.py ```
-  - Implements calculations of **Loss Versus Rebalancing (LVR)**.  
+``` code/sim/calculate_lvr.py ```
+  - Implements calculations of Loss Versus Rebalancing (LVR).  
   - Compares AMM strategy performance against an ideal arbitrage-free benchmark.  
   - Useful for understanding the costs of market making in volatile or imbalanced ZAR flows.  
 
