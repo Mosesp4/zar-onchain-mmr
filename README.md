@@ -98,13 +98,20 @@ Results saved to data/usdc_zar_simulations.csv.
 ``` code/sim/calculate_lvr.py ```
   - Implements calculations of Loss Versus Rebalancing (LVR).  
   - Compares AMM strategy performance against an ideal arbitrage-free benchmark.  
-  - Useful for understanding the costs of market making in volatile or imbalanced ZAR flows.  
+  - Useful for understanding the costs of market making in volatile or imbalanced ZAR flows.
 
-### 4) Safety & Secrets
+### 4) Open Source Code to Learn From / Fork
+ - Hummingbot: https://github.com/hummingbot/hummingbot (8k+ ⭐, hedging bots).
+ - Uniswap V3 Core: https://github.com/Uniswap/v3-core (5k+ ⭐, concentrated liquidity).
+ - Balancer V2: https://github.com/balancer-labs/balancer-v2-monorepo (1k+ ⭐, weighted/yield pools).
+ - Curve Finance: https://github.com/curvefi/curve-contract (1.5k+ ⭐, stablecoin AMMs).
+ - Awesome-AMM: https://github.com/0xperp/awesome-amm (curated list).
+
+### 5) Safety & Secrets
 
 - Never commit real API keys. Use .env (example provided).
 
 - This repository is for demonstration only.
 
-### 5) License
+### 6) License
 MIT License
