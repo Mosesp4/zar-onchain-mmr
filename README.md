@@ -1,6 +1,6 @@
-# ZAR Onchain Market Making — Research & Prototype
+# ZAR Onchain Market Making - Research & Prototype
 
-This repository supports my **Lava VC Task #2** response, researching a **ZAR ↔ USD AMM** with a focus on:
+This repository supports my **Lava VC Task (Question 2)** response, researching a **ZAR ↔ USD AMM** with a focus on:
 
 - Liquidity Value Risk (LVR)  
 - Avoiding imbalanced trade flow subsidies  
@@ -9,8 +9,7 @@ This repository supports my **Lava VC Task #2** response, researching a **ZAR �
 It contains:
 
 - **Methodology** for ZAR ↔ USD market design, minimizing subsidies via dynamic fees.  
-- **LVR & Fees Simulator** (`code/sim`) to estimate LP PnL = fees − LVR − opportunity costs.  
-- **Planned Strategy Scaffolding** (`code/mm`, `code/solidity`) for a concentrated-liquidity market maker with range management, oracle-bounded pricing, inventory caps, hedging stubs, and optional dynamic fee hooks (to be implemented).  
+- **LVR & Fees Simulator** (`code/sim`) to estimate LP PnL = fees − LVR − opportunity costs.    
 
 ⚠️ **This is research scaffolding for discussion only. Do not use in production.**
 
@@ -35,7 +34,7 @@ python amm_simulations.py
 ```
 
 ### 2) Structure
-
+```bash
 zar-onchain-mm-research/
 ├─ README.md
 ├─ docs/
@@ -60,7 +59,7 @@ zar-onchain-mm-research/
 └─ .github/
    └─ workflows/
       └─ ci.yml
-
+```
 
 ### 3) Current Functionality
 
@@ -72,8 +71,8 @@ zar-onchain-mm-research/
 
 - Generates profiling report (data/usdc_zar_profile.html).
 
-``` code/sim/amm_simulations.py ```
-**Simulates:**
+``` code/sim/amm_simulations.py ```<br />
+ **Simulates:**
 
 - LVR: 13,193.92 ZAR (low due to USDC stability).
 
@@ -84,6 +83,27 @@ zar-onchain-mm-research/
 - Opportunity Cost: 28,333.15 ZAR (8% interest rate).
 
 Results saved to data/usdc_zar_simulations.csv.
+
+``` fetch_usdc_zar.py ```
+  - Fetches ZAR/USD and USDC/ZAR market data from APIs (e.g., Binance, FX providers).  
+  - Normalizes the data into a structured format (CSV/Parquet).  
+  - Can be scheduled to run periodically for live updates.
+
+``` profile_report.py ``` 
+  - Generates automated exploratory data profiling reports using `ydata-profiling`.  
+  - Provides statistics, distributions, correlations, and anomaly checks on fetched datasets.  
+  - Useful for quickly understanding market data quality and potential biases.  
+
+
+``` code/sim/backtest.py ```
+- Runs simple backtests on ZAR <> USDC swap strategies.  
+- Helps simulate how different AMM pricing models would perform historically.  
+- Outputs performance metrics such as PnL, slippage, and arbitrage opportunities.  
+
+  ``` calculate_lvr.py ```
+  - Implements calculations of **Loss Versus Rebalancing (LVR)**.  
+  - Compares AMM strategy performance against an ideal arbitrage-free benchmark.  
+  - Useful for understanding the costs of market making in volatile or imbalanced ZAR flows.  
 
 ### 4) Safety & Secrets
 
